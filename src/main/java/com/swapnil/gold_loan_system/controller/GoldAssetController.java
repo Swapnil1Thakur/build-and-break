@@ -25,4 +25,12 @@ public class GoldAssetController {
 
             return ResponseEntity.ok(goldAssetService.addGold(customerId, goldAsset));
     }
+
+    @GetMapping("/{goldId}/eligibility")
+    public ResponseEntity<Double> calculateEligibility(@PathVariable Long goldId){
+        return ResponseEntity.ok(
+                goldAssetService.calculateEligibleAmount(goldId));
+
+    }
+
 }

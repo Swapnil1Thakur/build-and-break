@@ -36,4 +36,18 @@ public class GoldAssetService {
 
         return goldAssetRepository.save(goldAsset);
     }
+
+    // LTV (Loan-to-Value) determines the maximum loan amount based on the gold value.
+    // Formula: Eligible Loan Amount = Gold Value × LTV / 100
+    // Example: Gold Value = ₹3,00,000 and LTV = 75% → Eligible Loan = Rs 2,25,000.
+
+    public double calculateEligibleAmount(Long goldId){
+        GoldAsset goldAsset = goldAssetRepository.findById(goldId)
+                .orElseThrow(()-> new RuntimeException("Gold Asset not found"));
+
+        //hard coded for now
+        double ltvPercentage = 75.0;
+
+        return goldAsset.getGoldValue() * ltvPercentage / 100;
+    }
 }
