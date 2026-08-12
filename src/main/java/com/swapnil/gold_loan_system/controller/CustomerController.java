@@ -5,10 +5,7 @@ import com.swapnil.gold_loan_system.entity.Customer;
 import com.swapnil.gold_loan_system.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -36,5 +33,17 @@ public class CustomerController {
         return ResponseEntity.ok(savedCustomer);
 
 
+    }
+
+    //fetch customer by id
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id){
+        return ResponseEntity.ok(customerService.getCustomerById(id));
+    }
+
+    //verify kyc
+    @PutMapping("/{id}/verify-kyc")
+    public ResponseEntity<Customer> verifyKyc(@PathVariable Long id){
+        return ResponseEntity.ok(customerService.verifyKyc(id));
     }
 }

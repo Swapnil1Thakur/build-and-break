@@ -19,4 +19,22 @@ public class CustomerService {
         customer.setKycStatus(KycStatus.PENDING);
         return customerRepository.save(customer);
     }
+
+    //fetch customer based on ID
+    public Customer getCustomerById(Long id){
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    //verify kyc
+    public Customer verifyKyc(Long customerId){
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        customer.setKycStatus(KycStatus.VERIFIED);
+
+        return customerRepository.save(customer);
+    }
+
+
 }
