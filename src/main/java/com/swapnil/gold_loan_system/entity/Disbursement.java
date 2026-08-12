@@ -20,7 +20,7 @@ public class Disbursement {
     private String transactionReference;
 
     @Enumerated(EnumType.STRING)
-    private DisbursementStatus disbursementStatus;
+    private DisbursementStatus status;
 
     //One Loan → One Disbursement
     @OneToOne
