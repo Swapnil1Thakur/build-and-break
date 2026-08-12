@@ -1,5 +1,6 @@
 package com.swapnil.gold_loan_system.controller;
 
+import com.swapnil.gold_loan_system.dto.CustomerRequest;
 import com.swapnil.gold_loan_system.entity.Customer;
 import com.swapnil.gold_loan_system.service.CustomerService;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,18 @@ public class CustomerController {
 
 
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
+    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerRequest request){
+
+        Customer customer = new Customer();
+        customer.setName(request.getName());
+        customer.setMobileNumber(request.getMobileNumber());
+        customer.setEmail(request.getEmail());
+        customer.setPanNumber(request.getAadhaarNumber());
+        customer.setAadharNumber(request.getAadhaarNumber());
+
         Customer savedCustomer = customerService.createCustomer(customer);
         return ResponseEntity.ok(savedCustomer);
+
+
     }
 }
