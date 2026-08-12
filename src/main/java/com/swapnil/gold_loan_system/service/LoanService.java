@@ -49,4 +49,18 @@ public class LoanService {
         //(customer + gold ) -> LTV check -> eligible -> loan create -> applied
 
     }
+
+    //loan status update
+    public Loan approveLoan(Long loanId){
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+
+        if (loan.getStatus() != LoanStatus.APPLIED) {
+            throw new RuntimeException("Only applied loans can be approved");
+        }
+
+        loan.setStatus(LoanStatus.APPROVED);
+
+        return loanRepository.save(loan);
+    }
 }
