@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 //handles gold_assest's table operation in the database
-public interface GoldRepository extends JpaRepository<GoldAsset, Long> {
+public interface GoldAssetRepository extends JpaRepository<GoldAsset, Long> {
 
 
 }
