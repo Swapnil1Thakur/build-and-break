@@ -3,6 +3,7 @@ package com.swapnil.gold_loan_system.controller;
 import com.swapnil.gold_loan_system.dto.CustomerRequest;
 import com.swapnil.gold_loan_system.entity.Customer;
 import com.swapnil.gold_loan_system.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class CustomerController {
 
 
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerRequest request){
+    public ResponseEntity<Customer> createCustomer(@Valid @RequestBody CustomerRequest request){
 
         Customer customer = new Customer();
         customer.setName(request.getName());
