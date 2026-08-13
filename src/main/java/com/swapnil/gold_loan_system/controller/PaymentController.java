@@ -14,6 +14,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    // API for customer to make a repayment against their loan
     @PostMapping("/loan/{loanId}")
     public ResponseEntity<Payment> makePayment(@PathVariable Long loanId,
                                                @RequestParam double amount){
