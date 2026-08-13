@@ -6,7 +6,9 @@ import com.swapnil.gold_loan_system.enums.LoanStatus;
 import com.swapnil.gold_loan_system.enums.PaymentStatus;
 import com.swapnil.gold_loan_system.repository.LoanRepository;
 import com.swapnil.gold_loan_system.repository.PaymentRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
