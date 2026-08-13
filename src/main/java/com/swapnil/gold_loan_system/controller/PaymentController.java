@@ -17,8 +17,9 @@ public class PaymentController {
     // API for customer to make a repayment against their loan
     @PostMapping("/loan/{loanId}")
     public ResponseEntity<Payment> makePayment(@PathVariable Long loanId,
-                                               @RequestParam double amount){
+                                               @RequestParam double amount,
+                                               @RequestHeader("Idempotency-Key") String idempotencyKey){
         return  ResponseEntity.ok(
-                paymentService.makePayment(loanId, amount));
+                paymentService.makePayment(loanId, amount, idempotencyKey));
     }
 }

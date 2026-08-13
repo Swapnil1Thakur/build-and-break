@@ -6,7 +6,10 @@ import com.swapnil.gold_loan_system.enums.LoanStatus;
 import com.swapnil.gold_loan_system.enums.PaymentStatus;
 import com.swapnil.gold_loan_system.repository.LoanRepository;
 import com.swapnil.gold_loan_system.repository.PaymentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -20,7 +23,8 @@ public class PaymentService {
     }
 
     //This method creates a repayment/payment for a loan
-    public Payment makePayment(Long loadId, double amount){
+    @Transactional
+    public Payment makePayment(Long loadId, double amount, String idempotencyKey){
         Loan loan = loanRepository.findById(loadId)
                 .orElseThrow(() -> new RuntimeException("Loan not found"));
 
@@ -28,14 +32,22 @@ public class PaymentService {
             throw new RuntimeException("Payment allowed only for disbursed loan");
         }
 
+        Optional<Payment> existingPayment = paymentRepository.findByIdempotencyKey(idempotencyKey);
+
+        if(existingPayment.isPresent()){
+            return existingPayment.get();
+        }
+
         // Create a new Payment object
         Payment payment = new Payment();
 
         // link this payment with the loan
+        payment.setIdempotencyKey(idempotencyKey);
         payment.setLoan(loan);
         payment.setAmount(amount);
         payment.setStatus(PaymentStatus.SUCCESS);
         payment.setTransactionId("PAY : " + System.currentTimeMillis());
+
 
         return paymentRepository.save(payment);
 
