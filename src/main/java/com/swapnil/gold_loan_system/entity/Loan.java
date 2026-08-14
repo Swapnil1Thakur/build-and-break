@@ -30,5 +30,8 @@ public class Loan {
     @JoinColumn(name = "gold_asset_id")
     private GoldAsset goldAsset;
 
+    @Version
+    private Long version;
+
 
 }

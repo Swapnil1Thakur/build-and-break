@@ -20,12 +20,21 @@ public class PaymentService {
     public PaymentService(PaymentRepository paymentRepository, LoanRepository loanRepository) {
         this.paymentRepository = paymentRepository;
         this.loanRepository = loanRepository;
+
+    }
+
+    //implementing retry mechanism (mock way)
+    private void callPaymentGateway(int attempt){
+        if(attempt < 3){
+            throw new RuntimeException("Payment gateway temporarily unavailable");
+
+        }
     }
 
     //This method creates a repayment/payment for a loan
     @Transactional
     public Payment makePayment(Long loadId, double amount, String idempotencyKey){
-        Loan loan = loanRepository.findById(loadId)
+        Loan loan = loanRepository.findLoanForUpdate(loadId)
                 .orElseThrow(() -> new RuntimeException("Loan not found"));
 
         if(loan.getStatus() != LoanStatus.DISBURSED){
@@ -37,6 +46,31 @@ public class PaymentService {
         if(existingPayment.isPresent()){
             return existingPayment.get();
         }
+
+        int maxAttempts = 3;
+        for(int attempt = 1; attempt <= maxAttempts; attempt++){
+            try{
+                callPaymentGateway(attempt);
+                break;
+            }catch(RuntimeException e){
+                if(attempt == maxAttempts){
+                    throw new RuntimeException("Payment failed after retries");
+                }
+
+                try{
+                    Thread.sleep(1000L * attempt);
+
+                }catch(InterruptedException ex){
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Retry interrupted");
+
+                }
+
+            }
+        }
+
+
+
 
         // Create a new Payment object
         Payment payment = new Payment();
