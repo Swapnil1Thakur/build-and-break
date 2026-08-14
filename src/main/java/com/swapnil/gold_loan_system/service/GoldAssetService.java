@@ -2,6 +2,7 @@ package com.swapnil.gold_loan_system.service;
 
 import com.swapnil.gold_loan_system.entity.Customer;
 import com.swapnil.gold_loan_system.entity.GoldAsset;
+import com.swapnil.gold_loan_system.exception.ResourceNotFoundException;
 import com.swapnil.gold_loan_system.repository.CustomerRepository;
 import com.swapnil.gold_loan_system.repository.GoldAssetRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class GoldAssetService {
     // and save it in the database.
     public GoldAsset addGold(Long customerId, GoldAsset goldAsset){
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         double goldValue = goldAsset.getWeightInGrams() * goldAsset.getGoldRate();
 
@@ -43,7 +44,7 @@ public class GoldAssetService {
 
     public double calculateEligibleAmount(Long goldId){
         GoldAsset goldAsset = goldAssetRepository.findById(goldId)
-                .orElseThrow(()-> new RuntimeException("Gold Asset not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Gold Asset not found"));
 
         //hard coded for now
         double ltvPercentage = 75.0;

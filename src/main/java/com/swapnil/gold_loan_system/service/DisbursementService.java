@@ -4,6 +4,7 @@ import com.swapnil.gold_loan_system.entity.Disbursement;
 import com.swapnil.gold_loan_system.entity.Loan;
 import com.swapnil.gold_loan_system.enums.DisbursementStatus;
 import com.swapnil.gold_loan_system.enums.LoanStatus;
+import com.swapnil.gold_loan_system.exception.ResourceNotFoundException;
 import com.swapnil.gold_loan_system.repository.DisbursementRepository;
 import com.swapnil.gold_loan_system.repository.LoanRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class DisbursementService {
                 .orElseThrow(() -> new RuntimeException("Loan not found"));
 
         if(loan.getStatus() != LoanStatus.APPROVED){
-            throw new RuntimeException("Only approved loans can be disbursed");
+            throw new ResourceNotFoundException("Only approved loans can be disbursed");
         }
 
 

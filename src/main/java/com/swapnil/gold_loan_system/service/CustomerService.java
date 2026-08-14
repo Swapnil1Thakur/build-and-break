@@ -2,6 +2,7 @@ package com.swapnil.gold_loan_system.service;
 
 import com.swapnil.gold_loan_system.entity.Customer;
 import com.swapnil.gold_loan_system.enums.KycStatus;
+import com.swapnil.gold_loan_system.exception.ResourceNotFoundException;
 import com.swapnil.gold_loan_system.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class CustomerService {
     //verify kyc
     public Customer verifyKyc(Long customerId){
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         customer.setKycStatus(KycStatus.VERIFIED);
 

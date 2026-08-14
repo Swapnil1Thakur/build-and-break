@@ -4,6 +4,7 @@ import com.swapnil.gold_loan_system.entity.Loan;
 import com.swapnil.gold_loan_system.entity.Payment;
 import com.swapnil.gold_loan_system.enums.LoanStatus;
 import com.swapnil.gold_loan_system.enums.PaymentStatus;
+import com.swapnil.gold_loan_system.exception.ResourceNotFoundException;
 import com.swapnil.gold_loan_system.repository.LoanRepository;
 import com.swapnil.gold_loan_system.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
@@ -62,7 +63,7 @@ public class PaymentService {
 
                 }catch(InterruptedException ex){
                     Thread.currentThread().interrupt();
-                    throw new RuntimeException("Retry interrupted");
+                    throw new ResourceNotFoundException("Retry interrupted");
 
                 }
 

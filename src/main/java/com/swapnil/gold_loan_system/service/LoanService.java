@@ -4,6 +4,7 @@ import com.swapnil.gold_loan_system.entity.Customer;
 import com.swapnil.gold_loan_system.entity.GoldAsset;
 import com.swapnil.gold_loan_system.entity.Loan;
 import com.swapnil.gold_loan_system.enums.LoanStatus;
+import com.swapnil.gold_loan_system.exception.ResourceNotFoundException;
 import com.swapnil.gold_loan_system.repository.CustomerRepository;
 import com.swapnil.gold_loan_system.repository.GoldAssetRepository;
 import com.swapnil.gold_loan_system.repository.LoanRepository;
@@ -26,10 +27,10 @@ public class LoanService {
     public Loan applyLoan(Long customerId, Long goldId, double requestedAmount){
 
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         GoldAsset goldAsset = goldAssetRepository.findById(goldId)
-                .orElseThrow(() -> new RuntimeException("Gold asset not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Gold asset not found"));
 
         double eligibleAmount = goldAsset.getGoldValue() * 75 / 100;
 
@@ -53,7 +54,7 @@ public class LoanService {
     //loan status update
     public Loan approveLoan(Long loanId){
         Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new RuntimeException("Loan not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Loan not found"));
 
         if (loan.getStatus() != LoanStatus.APPLIED) {
             throw new RuntimeException("Only applied loans can be approved");
